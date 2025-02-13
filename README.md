@@ -4,7 +4,13 @@
 ```bash
   go test -gcflags=all=-l -v ./mock
 ```
+
 - gock库
+```bash
+  go test -gcflags=all=-l -v ./mock
+```
+
+- testify库
 ```bash
   go test -gcflags=all=-l -v ./mock
 ```
