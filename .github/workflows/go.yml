@@ -31,3 +31,6 @@ jobs:
 
       - name: Test mock
         run: go test -gcflags=all=-l -v ./mock
+
+      - name: Test cgo
+        run: go test -gcflags=all=-l -v ./cgo
