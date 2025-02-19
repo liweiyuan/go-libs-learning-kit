@@ -14,3 +14,8 @@
 ```bash
   go test -gcflags=all=-l -v ./mock
 ```
+
+- bytes库
+```bash
+  go test  -v ./byte
+```

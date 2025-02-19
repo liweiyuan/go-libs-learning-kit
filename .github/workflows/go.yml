@@ -34,3 +34,6 @@ jobs:
 
       - name: Test cgo
         run: go test -gcflags=all=-l -v ./cgo
+
+      - name: Test bytes
+        run: go test -v ./byte
