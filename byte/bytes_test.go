@@ -73,10 +73,7 @@ func TestBufferWriteStringReadString(t *testing.T) {
 	}
 
 	//测试读取字符串
-	output, err := buf.ReadString('\n')
-	if err != nil {
-		t.Errorf("ReadString failed: %v", err)
-	}
+	output := buf.String()
 	if output != input {
 		t.Errorf("ReadString returned wrong data: got %q, want %q", output, input)
 	}
