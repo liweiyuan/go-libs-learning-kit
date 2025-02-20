@@ -9,6 +9,9 @@ import (
 	"github.com/nbio/st"
 )
 
+// TestSimpleGoMock 测试使用 gock 库进行 HTTP 请求的模拟。
+// 该测试创建一个模拟的 HTTP 服务器，响应特定的 GET 请求，并验证返回的状态码和响应体内容。
+// 最后，确保没有未完成的模拟请求。
 func TestSimpleGoMock(t *testing.T) {
 	defer gock.Off()
 
@@ -42,6 +45,7 @@ func TestMatchHeaders(t *testing.T) {
 		BodyString("foo foo")
 
 	req, err := http.NewRequest("GET", "http://foo.com", nil)
+	st.Expect(t, err, nil)
 	req.Header.Set("Authorization", "foo bar")
 	req.Header.Set("API", "1.0")
 	req.Header.Set("Accept", "text/plain")

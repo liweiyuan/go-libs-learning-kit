@@ -13,6 +13,14 @@ const (
 	ReplaceNone
 )
 
+// replaceWithMode 根据指定的替换模式替换字节切片中的内容。
+// 参数：
+//   s - 原始字节切片
+//   old - 要被替换的字节切片
+//   new - 替换成的字节切片
+//   mode - 替换模式，支持 ReplaceAll、ReplaceFirst 和 ReplaceNone
+// 返回值：
+//   返回替换后的字节切片
 func replaceWithMode(s, old, new []byte, mode ReplaceMode) []byte {
 	switch mode {
 	case ReplaceAll:
