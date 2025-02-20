@@ -19,3 +19,8 @@
 ```bash
   go test  -v ./byte
 ```
+
+- json
+```bash
+go test -v ./json
+```
