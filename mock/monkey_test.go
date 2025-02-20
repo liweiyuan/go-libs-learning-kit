@@ -37,6 +37,9 @@ func (c *Calculator) Add(a, b int) int {
 	return a + b
 }
 
+// TestMockCalculatorAddMethod 测试 Calculator 的 Add 方法是否被正确替换。
+// 在测试中，使用 gomonkey 库对 Add 方法进行猴子补丁，
+// 将其替换为返回两个参数的乘积。最后验证返回值是否符合预期。
 func TestMockCalculatorAddMethod(t *testing.T) {
 
 	cal := &Calculator{}
