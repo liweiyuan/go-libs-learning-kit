@@ -1,6 +1,6 @@
 ### go相关库学习
-- gomonkey
 
+- gomonkey
 ```bash
   go test -gcflags=all=-l -v ./mock
 ```
@@ -23,4 +23,9 @@
 - json
 ```bash
   go test -v ./json
+```
+
+- goconvey
+```bash
+ go test -gcflags=all=-l -v ./mock
 ```
