@@ -17,3 +17,30 @@ func TestSpec(t *testing.T) {
 		})
 	})
 }
+
+func TestPositiveNumberAdd(t *testing.T) {
+	Convey("Given two integers with starting values", t, func() {
+		a := 1
+		b := 2
+		Convey("When the integers are added", func() {
+			sum := a + b
+			Convey("The result should be the sum of the two integers", func() {
+				So(sum, ShouldEqual, 3)
+			})
+		})
+	})
+
+}
+
+func TestNegativeNumberAdd(t *testing.T) {
+	Convey("Given a negative integer and a positive integer", t, func() {
+		a := -1
+		b := 2
+		Convey("When the integers are added", func() {
+			sum := a + b
+			Convey("The result should be the sum of the two integers", func() {
+				So(sum, ShouldEqual, 1)
+			})
+		})
+	})
+}
