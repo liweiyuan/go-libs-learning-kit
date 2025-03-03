@@ -59,6 +59,10 @@ func TestTwoSum2(t *testing.T) {
 		{[]int{3, 2, 4}, 6, []int{1, 2}},
 		{[]int{3, 3}, 6, []int{0, 1}},
 		{[]int{1, 2, 3, 4, 5}, 10, nil},
+		{[]int{2, 4, 5}, 9, []int{1, 2}},
+		{[]int{2, 4, 5}, 10, nil},
+		{[]int{2, 4, 5}, 7, []int{0, 2}},
+		{[]int{2, 4, 5}, 12, nil},
 	}
 
 	for _, tt := range tests {
