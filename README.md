@@ -29,3 +29,8 @@
 ```bash
  go test -gcflags=all=-l -v ./mock
 ```
+
+- leetCode
+```bash
+ go test -v ./leetcode
+```

@@ -37,6 +37,9 @@ jobs:
 
       - name: Test bytes
         run: go test -v ./byte
-      
+
       - name: Test json
         run: go test -v ./json
+
+      - name: Test array
+        run: go test -v ./leetcode
