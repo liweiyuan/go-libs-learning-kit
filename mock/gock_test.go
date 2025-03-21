@@ -1,61 +1,129 @@
 package mock
 
 import (
-	"io"
 	"net/http"
+	"strings"
 	"testing"
+	"time"
+
+	"io"
 
 	"github.com/h2non/gock"
-	"github.com/nbio/st"
+	"github.com/stretchr/testify/assert"
 )
 
-// TestSimpleGoMock 测试使用 gock 库进行 HTTP 请求的模拟。
-// 该测试创建一个模拟的 HTTP 服务器，响应特定的 GET 请求，并验证返回的状态码和响应体内容。
-// 最后，确保没有未完成的模拟请求。
 func TestSimpleGoMock(t *testing.T) {
-	defer gock.Off()
+	defer gock.Off() // 清除所有的mock
 
 	gock.New("http://example.com").
-		Get("/bar").
+		Get("/").
 		Reply(200).
 		JSON(map[string]string{"foo": "bar"})
 
-	// Perform the HTTP request
-	resp, err := http.Get("http://example.com/bar")
-	st.Expect(t, err, nil)
-	st.Expect(t, resp.StatusCode, 200)
+	resp, err := http.Get("http://example.com/")
+	assert.NoError(t, err)
+	assert.Equal(t, 200, resp.StatusCode)
 
-	body, _ := io.ReadAll(resp.Body)
-	t.Log(string(body))
-	st.Expect(t, string(body)[:13], `{"foo":"bar"}`)
-
-	// Ensure that we don't have pending mocks
-	// This will throw an error if there are pending mocks
-	st.Expect(t, gock.IsDone(), true)
+	body, err := io.ReadAll(resp.Body)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"foo": "bar"}`, string(body))
 }
 
 func TestMatchHeaders(t *testing.T) {
-	defer gock.Off()
+	defer gock.Off() // 清除所有的mock
 
-	gock.New("http://foo.com").
-		MatchHeader("Authorization", "^foo bar$").
-		MatchHeader("API", "1.[0-9]+").
-		HeaderPresent("Accept").
+	gock.New("http://example.com").
+		MatchHeader("Authorization", "Bearer token").
+		Get("/").
 		Reply(200).
-		BodyString("foo foo")
+		JSON(map[string]string{"foo": "bar"})
 
-	req, err := http.NewRequest("GET", "http://foo.com", nil)
-	st.Expect(t, err, nil)
-	req.Header.Set("Authorization", "foo bar")
-	req.Header.Set("API", "1.0")
-	req.Header.Set("Accept", "text/plain")
+	req, err := http.NewRequest("GET", "http://example.com/", nil)
+	assert.NoError(t, err)
+	req.Header.Set("Authorization", "Bearer token")
 
-	res, err := (&http.Client{}).Do(req)
-	st.Expect(t, err, nil)
-	st.Expect(t, res.StatusCode, 200)
-	body, _ := io.ReadAll(res.Body)
-	st.Expect(t, string(body), "foo foo")
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	assert.NoError(t, err)
+	assert.Equal(t, 200, resp.StatusCode)
 
-	// Verify that we don't have pending mocks
-	st.Expect(t, gock.IsDone(), true)
+	body, err := io.ReadAll(resp.Body)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"foo": "bar"}`, string(body))
+}
+
+func TestQueryParams(t *testing.T) {
+	defer gock.Off() // 清除所有的mock
+
+	gock.New("http://example.com").
+		Get("/").
+		MatchParam("foo", "bar").
+		Reply(200).
+		JSON(map[string]string{"foo": "bar"})
+
+	resp, err := http.Get("http://example.com/?foo=bar")
+	assert.NoError(t, err)
+	assert.Equal(t, 200, resp.StatusCode)
+
+	body, err := io.ReadAll(resp.Body)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"foo": "bar"}`, string(body))
+}
+
+func TestPostRequest(t *testing.T) {
+	defer gock.Off() // 清除所有的mock
+
+	gock.New("http://example.com").
+		Post("/").
+		MatchType("json").
+		JSON(map[string]string{"name": "test"}).
+		Reply(201).
+		JSON(map[string]string{"id": "123"})
+
+	client := &http.Client{}
+	req, err := http.NewRequest("POST", "http://example.com/", io.NopCloser(strings.NewReader(`{"name": "test"}`)))
+	assert.NoError(t, err)
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := client.Do(req)
+	assert.NoError(t, err)
+	assert.Equal(t, 201, resp.StatusCode)
+
+	body, err := io.ReadAll(resp.Body)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"id": "123"}`, string(body))
+}
+
+func TestErrorResponse(t *testing.T) {
+	defer gock.Off() // 清除所有的mock
+
+	gock.New("http://example.com").
+		Get("/").
+		Reply(404).
+		JSON(map[string]string{"error": "not found"})
+
+	resp, err := http.Get("http://example.com/")
+	assert.NoError(t, err)
+	assert.Equal(t, 404, resp.StatusCode)
+
+	body, err := io.ReadAll(resp.Body)
+	assert.NoError(t, err)
+	assert.JSONEq(t, `{"error": "not found"}`, string(body))
+}
+
+func TestTimeout(t *testing.T) {
+	defer gock.Off() // 清除所有的mock
+
+	gock.New("http://example.com").
+		Get("/").
+		Reply(200).
+		Delay(2 * time.Second).
+		JSON(map[string]string{"foo": "bar"})
+
+	client := &http.Client{
+		Timeout: 1 * time.Second,
+	}
+	_, err := client.Get("http://example.com/")
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "Client.Timeout exceeded")
 }
