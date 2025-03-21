@@ -43,3 +43,6 @@ jobs:
 
       - name: Test array
         run: go test -v ./leetcode
+
+      - name: Bash
+        run: bash ./test.sh
