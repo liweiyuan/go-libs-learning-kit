@@ -1,36 +1,61 @@
-### go相关库学习
+# Go 库学习工具包
 
-- gomonkey
+这个项目包含了多个 Go 语言库的学习示例和测试用例。
+
+## 项目结构
+
+- `byte/`: 字节操作相关示例
+- `cgo/`: C语言与Go的交互示例
+- `json/`: JSON处理示例
+- `leetcode/`: 算法题目示例
+- `mock/`: 各种测试框架的使用示例
+
+## 运行测试
+
+可以使用以下命令运行测试：
+
 ```bash
-  go test -gcflags=all=-l -v ./mock
+# 给测试脚本添加执行权限
+chmod +x test.sh
+
+# 运行所有测试
+./test.sh
 ```
 
-- gock库
-```bash
-  go test -gcflags=all=-l -v ./mock
-```
+## 测试覆盖的内容
 
-- testify库
-```bash
-  go test -gcflags=all=-l -v ./mock
-```
+1. byte包
+   - Buffer的写入和读取
+   - 字符串操作
+   - 字节替换
+   - 边界情况
 
-- bytes库
-```bash
-  go test  -v ./byte
-```
+2. cgo包
+   - 基本算术运算
+   - 边界值处理
+   - 并发安全性
+   - 性能对比
 
-- json
-```bash
-  go test -v ./json
-```
+3. json包
+   - 基本序列化和反序列化
+   - 嵌套结构体
+   - 自定义标签
+   - 错误处理
 
-- goconvey
-```bash
- go test -gcflags=all=-l -v ./mock
-```
+4. leetcode包
+   - Two Sum
+   - Three Sum
+   - 最大子数组和
+   - 其他数组操作算法
 
-- leetCode
-```bash
- go test -v ./leetcode
-```
+5. mock包
+   - gock HTTP模拟
+   - goconvey测试框架
+   - monkey打桩测试
+   - testify断言和模拟
+
+## 注意事项
+
+1. 确保已安装Go 1.16或更高版本
+2. 部分测试可能需要网络连接
+3. CGO测试需要安装GCC编译器
