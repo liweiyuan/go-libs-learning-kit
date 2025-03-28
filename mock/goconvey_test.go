@@ -36,6 +36,8 @@ func TestPositiveNumberAdd(t *testing.T) {
 		{5, 6, 11},
 		{0, 0, 0},
 		{1, -1, 0},
+		{2, 3, 5},
+		{3, 4, 7},
 	}
 
 	Convey("Given two integers with starting values", t, func() {
@@ -183,7 +185,7 @@ func TestConcurrentOperations(t *testing.T) {
 		var mu sync.Mutex
 		var wg sync.WaitGroup
 
-		for i := 0; i < 10; i++ {
+		for range 10 {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
@@ -293,7 +295,7 @@ func BenchmarkOperations(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		Convey("Benchmark test", b, func() {
 			result := 0
-			for j := 0; j < 1000; j++ {
+			for j := range 1000 {
 				result += j
 			}
 			So(result, ShouldBeGreaterThan, 0)
