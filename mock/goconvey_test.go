@@ -36,8 +36,8 @@ func TestPositiveNumberAdd(t *testing.T) {
 		{5, 6, 11},
 		{0, 0, 0},
 		{1, -1, 0},
-		{2, 3, 5},
-		{3, 4, 7},
+		{5, 3, 8},
+		{3, 7, 10},
 	}
 
 	Convey("Given two integers with starting values", t, func() {
