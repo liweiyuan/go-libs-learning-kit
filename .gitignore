@@ -2,7 +2,7 @@
 .vscode/
 build/
 .zed/
-
+.idea/
 
 ### execute
 go-libs-learning-kit
