@@ -86,7 +86,9 @@ func TestFunkKeys(t *testing.T) {
 	Convey("Test funk.Keys", t, func() {
 		m := map[string]int{"a": 1, "b": 2, "c": 3}
 		Convey("Get keys", func() {
-			So(funk.Keys(m).([]string), ShouldResemble, []string{"a", "b", "c"})
+			So(funk.Keys(m).([]string), ShouldContain, "a")
+			So(funk.Keys(m).([]string), ShouldContain, "b")
+			So(funk.Keys(m).([]string), ShouldContain, "c")
 		})
 	})
 }
@@ -97,7 +99,9 @@ func TestFunkValues(t *testing.T) {
 	Convey("Test funk.Values", t, func() {
 		m := map[string]int{"a": 1, "b": 2, "c": 3}
 		Convey("Get values", func() {
-			So(funk.Values(m).([]int), ShouldResemble, []int{1, 2, 3})
+			So(funk.Values(m).([]int), ShouldContain, 1)
+			So(funk.Values(m).([]int), ShouldContain, 2)
+			So(funk.Values(m).([]int), ShouldContain, 3)
 		})
 	})
 }
