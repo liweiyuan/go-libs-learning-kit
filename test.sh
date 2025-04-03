@@ -73,38 +73,56 @@ run_leetcode_tests() {
     fi
 }
 
+# 运行funk包测试
+run_funk_tests() {
+    print_info "正在运行 funk 包测试..."
+    if go test -v ./funk; then
+        print_success "funk 包测试完成"
+        return 0
+    else
+        print_error "funk 包测试失败"
+        return 1
+    fi
+}
+
 # 主函数
 main() {
     print_info "开始运行所有测试..."
     echo "----------------------------------------"
-    
+
     # 记录失败的测试
     failed_tests=()
-    
+
     # 运行mock包测试（包括所有mock相关的测试）
     if ! run_mock_tests; then
         failed_tests+=("mock")
     fi
     echo "----------------------------------------"
-    
+
     # 运行bytes包测试
     if ! run_byte_tests; then
         failed_tests+=("byte")
     fi
     echo "----------------------------------------"
-    
+
     # 运行json包测试
     if ! run_json_tests; then
         failed_tests+=("json")
     fi
     echo "----------------------------------------"
-    
+
     # 运行leetcode包测试
     if ! run_leetcode_tests; then
         failed_tests+=("leetcode")
     fi
     echo "----------------------------------------"
-    
+
+    # 运行funk包测试
+    if ! run_funk_tests; then
+        failed_tests+=("funk")
+    fi
+    echo "----------------------------------------"
+
     # 显示测试结果摘要
     if [ ${#failed_tests[@]} -eq 0 ]; then
         print_success "所有测试通过！"

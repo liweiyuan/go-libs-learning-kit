@@ -44,5 +44,8 @@ jobs:
       - name: Test array
         run: go test -v ./leetcode
 
+      - name: Test funk
+        run: go test -v ./funk
+
       - name: Bash
         run: bash ./test.sh
